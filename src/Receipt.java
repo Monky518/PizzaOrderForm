@@ -1,10 +1,13 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class Receipt extends Order
 {
     public JTextArea createReceipt(double subTotal, double tax, double total)
     {
-        JTextArea orderForm = new JTextArea(20,60);
+        JTextArea orderForm = new JTextArea(13,50);
+        orderForm.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        orderForm.setEditable(false);
         orderForm.append("==================================================\n");
 
         if (getPizzaSize() == Order.size.small)
@@ -17,7 +20,7 @@ public class Receipt extends Order
             else if (getPizzaCrust() == Order.crust.deepDish)
                 orderForm.append("Deep Dish Crust                   \n");
             else
-                orderForm.append("ERROR: Size                       \n");
+                orderForm.append("Crust Not Selected                \n");
         }
         else if (getPizzaSize() == Order.size.medium)
         {
@@ -29,7 +32,7 @@ public class Receipt extends Order
             else if (getPizzaCrust() == Order.crust.deepDish)
                 orderForm.append("Deep Dish Crust                  \n");
             else
-                orderForm.append("ERROR: Size                      \n");
+                orderForm.append("Crust Not Selected               \n");
         }
         else if (getPizzaSize() == Order.size.large)
         {
@@ -41,7 +44,7 @@ public class Receipt extends Order
             else if (getPizzaCrust() == Order.crust.deepDish)
                 orderForm.append("Deep Dish Crust                   \n");
             else
-                orderForm.append("ERROR: Size                       \n");
+                orderForm.append("Crust Not Selected                \n");
         }
         else if (getPizzaSize() == Order.size.extraLarge)
         {
@@ -53,19 +56,19 @@ public class Receipt extends Order
             else if (getPizzaCrust() == Order.crust.deepDish)
                 orderForm.append("Deep Dish Crust             \n");
             else
-                orderForm.append("ERROR: Size                 \n");
+                orderForm.append("Crust Not Selected          \n");
         }
         else
         {
-            orderForm.append("ERROR: Crust ");
+            orderForm.append("Size Not Selected ");
             if (getPizzaCrust() == Order.crust.thin)
-                orderForm.append("Thin Crust                 \n");
+                orderForm.append("Thin Crust            \n");
             else if (getPizzaCrust() == Order.crust.regular)
-                orderForm.append("Regular Crust              \n");
+                orderForm.append("Regular Crust         \n");
             else if (getPizzaCrust() == Order.crust.deepDish)
-                orderForm.append("Deep Dish Crust            \n");
+                orderForm.append("Deep Dish Crust       \n");
             else
-                orderForm.append("ERROR: Size                \n");
+                orderForm.append("| Crust Not Selected  \n");
         }
 
         if (getOneIngredient(0))
