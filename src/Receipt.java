@@ -84,10 +84,10 @@ public class Receipt extends Order
         else if (getOneIngredient(5))
             orderForm.append("Extra Cheese                            $1.00\n");
 
-        orderForm.append("Sub-Total                               " + subTotal + "\n");
-        orderForm.append("Tax                                     " + tax + "\n");
+        orderForm.append("Sub-Total                              $" + subTotal + "\n");
+        orderForm.append("Tax                                    $" + tax + "\n");
         orderForm.append("--------------------------------------------------\n");
-        orderForm.append("Total                                   " + total + "\n");
+        orderForm.append("Total                                  $" + total + "\n");
         orderForm.append("==================================================");
 
         return orderForm;

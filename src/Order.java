@@ -49,6 +49,10 @@ public class Order
         this.pizzaSize = pizzaSize;
     }
 
+    public boolean[] getIngredients() {
+        return ingredients;
+    }
+
     public void setOneIngredient(int ingredient, boolean setBoolean)
     {
         ingredients[ingredient] = setBoolean;

@@ -1,5 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class Main
 {
@@ -29,89 +33,192 @@ public class Main
         // quit button
             // optionPane.confirmMessageDialog before quitting
 
+        final double[] subTotal = {0.00};
+        final double[] tax = {0.00};
+        final double[] total = {0.00};
+
         Receipt currentOrder = new Receipt();
         JFrame mainFrame = new Frame();
-        JPanel displayPanel = new JPanel();
+        JPanel pizzaSizeCrustPanel = new JPanel();
+        JPanel ingredientPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
-        double subTotal = 0.0;
-        double tax = 0.0;
-        double total = 0.0;
+        JPanel menuPanel = new JPanel();
+        menuPanel.add(new Menu().createMenu());
+        JPanel receiptPanel = new JPanel();
+        receiptPanel.add(currentOrder.createReceipt(subTotal[0], tax[0], total[0]));
 
         // set up button panel
         JButton orderButton = new JButton("Order");
-        JButton clearButton = new JButton("Clear");
-        JButton quitButton = new JButton("Quit");
         buttonPanel.add(orderButton);
+        JButton clearButton = new JButton("Clear");
         buttonPanel.add(clearButton);
+        JButton quitButton = new JButton("Quit");
         buttonPanel.add(quitButton);
 
         // set up frame
-        mainFrame.setLayout(new GridLayout(2,2));
-        mainFrame.add(displayPanel);
-        mainFrame.add(new JPanel().add(new Menu().createMenu()));
+        mainFrame.setLayout(new GridLayout(3,2));
+        mainFrame.add(pizzaSizeCrustPanel);
+        mainFrame.add(menuPanel);
+        mainFrame.add(ingredientPanel);
+        mainFrame.add(receiptPanel);
         mainFrame.add(buttonPanel);
-        mainFrame.add(new JPanel().add(currentOrder.createReceipt(subTotal, tax, total)));
+        mainFrame.add(new JPanel());
 
         // select pizza size
         JComboBox pizzaSize = new JComboBox(new String[]{"Small", "Medium", "Large", "Extra Large"});
-        displayPanel.add(pizzaSize);
+        pizzaSizeCrustPanel.add(pizzaSize);
 
         // select pizza crust
         ButtonGroup group = new ButtonGroup();
         JRadioButton thinCrust = new JRadioButton("Thin Crust");
-        JRadioButton regularCrust = new JRadioButton("Regular Crust");
-        JRadioButton deepDishCrust = new JRadioButton("Deep-Dish Crust");
         group.add(thinCrust);
+        pizzaSizeCrustPanel.add(thinCrust);
+        JRadioButton regularCrust = new JRadioButton("Regular Crust", true);
         group.add(regularCrust);
+        pizzaSizeCrustPanel.add(regularCrust);
+        JRadioButton deepDishCrust = new JRadioButton("Deep-Dish Crust");
         group.add(deepDishCrust);
-
-        displayPanel.add(thinCrust);
-        displayPanel.add(regularCrust);
-        displayPanel.add(deepDishCrust);
+        pizzaSizeCrustPanel.add(deepDishCrust);
 
         // add ingredients
         JCheckBox pepperoni = new JCheckBox("Pepperoni");
+        ingredientPanel.add(pepperoni);
         JCheckBox sausage = new JCheckBox("Sausage");
+        ingredientPanel.add(sausage);
         JCheckBox blackOlives = new JCheckBox("Black Olives");
+        ingredientPanel.add(blackOlives);
         JCheckBox bananaPeppers = new JCheckBox("Banana Peppers");
+        ingredientPanel.add(bananaPeppers);
         JCheckBox mushrooms = new JCheckBox("Mushrooms");
+        ingredientPanel.add(mushrooms);
         JCheckBox extraCheese = new JCheckBox("Extra Cheese");
+        ingredientPanel.add(extraCheese);
 
-        displayPanel.add(pepperoni);
-        displayPanel.add(sausage);
-        displayPanel.add(blackOlives);
-        displayPanel.add(bananaPeppers);
-        displayPanel.add(mushrooms);
-        displayPanel.add(extraCheese);
+        // button actions
+        orderButton.addActionListener
+        (
+            new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    System.out.print("Checking for pizza size, ");
 
-        // set values to receipt
-        if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Small"))
-            currentOrder.setPizzaSize(Order.size.small);
-        else if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Medium"))
-            currentOrder.setPizzaSize(Order.size.medium);
-        else if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Large"))
-            currentOrder.setPizzaSize(Order.size.large);
-        else if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Extra Large"))
-            currentOrder.setPizzaSize(Order.size.extraLarge);
+                    if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Small"))
+                    {
+                        currentOrder.setPizzaSize(Order.size.small);
+                        subTotal[0] += 8.00;
+                    }
+                    else if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Medium"))
+                    {
+                        currentOrder.setPizzaSize(Order.size.medium);
+                        subTotal[0] += 12.00;
+                    }
+                    else if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Large"))
+                    {
+                        currentOrder.setPizzaSize(Order.size.large);
+                        subTotal[0] += 16.00;
+                    }
+                    else if (String.valueOf(pizzaSize.getSelectedItem()).equalsIgnoreCase("Extra Large"))
+                    {
+                        currentOrder.setPizzaSize(Order.size.extraLarge);
+                        subTotal[0] += 20.00;
+                    }
 
-        if (thinCrust.isSelected())
-            currentOrder.setPizzaCrust(Order.crust.thin);
-        else if (regularCrust.isSelected())
-            currentOrder.setPizzaCrust(Order.crust.regular);
-        else if (deepDishCrust.isSelected())
-            currentOrder.setPizzaCrust(Order.crust.deepDish);
+                    System.out.println(currentOrder.getPizzaSize().toString());
+                    System.out.print("Checking for pizza crust, ");
 
-        if (pepperoni.isSelected())
-            currentOrder.setOneIngredient(0, true);
-        else if (sausage.isSelected())
-            currentOrder.setOneIngredient(1, true);
-        else if (blackOlives.isSelected())
-            currentOrder.setOneIngredient(2, true);
-        else if (bananaPeppers.isSelected())
-            currentOrder.setOneIngredient(3, true);
-        else if (mushrooms.isSelected())
-            currentOrder.setOneIngredient(4, true);
-        else if (extraCheese.isSelected())
-            currentOrder.setOneIngredient(5, true);
+                    if (thinCrust.isSelected())
+                        currentOrder.setPizzaCrust(Order.crust.thin);
+                    else if (regularCrust.isSelected())
+                        currentOrder.setPizzaCrust(Order.crust.regular);
+                    else if (deepDishCrust.isSelected())
+                        currentOrder.setPizzaCrust(Order.crust.deepDish);
+
+                    System.out.println(currentOrder.getPizzaCrust().toString());
+                    System.out.print("Checking for ingredients ");
+
+                    if (pepperoni.isSelected())
+                    {
+                        currentOrder.setOneIngredient(0, true);
+                        subTotal[0] += 1.00;
+                    }
+                    if (sausage.isSelected())
+                    {
+                        currentOrder.setOneIngredient(1, true);
+                        subTotal[0] += 1.00;
+                    }
+                    if (blackOlives.isSelected())
+                    {
+                        currentOrder.setOneIngredient(2, true);
+                        subTotal[0] += 1.00;
+                    }
+                    if (bananaPeppers.isSelected())
+                    {
+                        currentOrder.setOneIngredient(3, true);
+                        subTotal[0] += 1.00;
+                    }
+                    if (mushrooms.isSelected())
+                    {
+                        currentOrder.setOneIngredient(4, true);
+                        subTotal[0] += 1.00;
+                    }
+                    if (extraCheese.isSelected())
+                    {
+                        currentOrder.setOneIngredient(5, true);
+                        subTotal[0] += 1.00;
+                    }
+
+                    System.out.println(Arrays.toString(currentOrder.getIngredients()));
+                    System.out.print("Checking price ");
+
+                    tax[0] = subTotal[0] * 0.07;
+                    total[0] = subTotal[0] * 1.07;
+
+                    subTotal[0] = Double.parseDouble(new DecimalFormat("0.00").format(subTotal[0]));
+                    tax[0] = Double.parseDouble(new DecimalFormat("0.00").format(tax[0]));
+                    total[0] = Double.parseDouble(new DecimalFormat("0.00").format(total[0]));
+
+                    System.out.println(subTotal[0] + " | " + tax[0] + " | " + total[0]);
+                    System.out.println("Remove everything");
+
+                    mainFrame.removeAll();
+                    receiptPanel.removeAll();
+
+                    System.out.println("Show updated receipt");
+
+                    receiptPanel.add(currentOrder.createReceipt(subTotal[0], tax[0], total[0]));
+                    mainFrame.add(receiptPanel);
+                }
+            }
+        );
+
+        clearButton.addActionListener
+        (
+            new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+                    pizzaSize.setSelectedItem("Small");
+                    regularCrust.setSelected(true);
+                    pepperoni.setSelected(false);
+                    sausage.setSelected(false);
+                    blackOlives.setSelected(false);
+                    bananaPeppers.setSelected(false);
+                    mushrooms.setSelected(false);
+                    extraCheese.setSelected(false);
+                }
+            }
+        );
+
+        quitButton.addActionListener
+        (
+            new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+
+                }
+            }
+        );
     }
 }
