@@ -45,7 +45,8 @@ public class Main
         JPanel menuPanel = new JPanel();
         menuPanel.add(new Menu().createMenu());
         JPanel receiptPanel = new JPanel();
-        receiptPanel.add(currentOrder.createReceipt(subTotal[0], tax[0], total[0]));
+        JTextArea receiptText = currentOrder.createReceipt(subTotal[0], tax[0], total[0]);
+        receiptPanel.add(receiptText);
 
         // set up button panel
         JButton orderButton = new JButton("Order");
@@ -56,13 +57,11 @@ public class Main
         buttonPanel.add(quitButton);
 
         // set up frame
-        mainFrame.setLayout(new GridLayout(3,2));
-        mainFrame.add(pizzaSizeCrustPanel);
+        mainFrame.setLayout(new GridLayout(4,1));
         mainFrame.add(menuPanel);
+        mainFrame.add(pizzaSizeCrustPanel);
         mainFrame.add(ingredientPanel);
-        mainFrame.add(receiptPanel);
         mainFrame.add(buttonPanel);
-        mainFrame.add(new JPanel());
 
         // select pizza size
         JComboBox pizzaSize = new JComboBox(new String[]{"Small", "Medium", "Large", "Extra Large"});
@@ -179,15 +178,24 @@ public class Main
                     total[0] = Double.parseDouble(new DecimalFormat("0.00").format(total[0]));
 
                     System.out.println(subTotal[0] + " | " + tax[0] + " | " + total[0]);
-                    System.out.println("Remove everything");
 
-                    mainFrame.removeAll();
-                    receiptPanel.removeAll();
+                    mainFrame.remove(pizzaSizeCrustPanel);
+                    mainFrame.remove(menuPanel);
+                    mainFrame.remove(ingredientPanel);
+                    mainFrame.remove(buttonPanel);
 
-                    System.out.println("Show updated receipt");
+                    buttonPanel.remove(orderButton);
+                    buttonPanel.remove(clearButton);
 
-                    receiptPanel.add(currentOrder.createReceipt(subTotal[0], tax[0], total[0]));
-                    mainFrame.add(receiptPanel);
+                    mainFrame.setLayout(new GridLayout(2,1));
+                    JPanel completeReceipt = new JPanel();
+                    completeReceipt.add(currentOrder.createReceipt(subTotal[0], tax[0], total[0]));
+                    mainFrame.add(completeReceipt);
+                    mainFrame.add(buttonPanel);
+
+                    mainFrame.invalidate();
+                    mainFrame.validate();
+                    mainFrame.repaint();
                 }
             }
         );
@@ -216,7 +224,10 @@ public class Main
             {
                 public void actionPerformed(ActionEvent e)
                 {
-
+                    int input = JOptionPane.showConfirmDialog(null, "Sure you want to quit?");
+                    // 0=yes, 1=no, 2=cancel
+                    if (input == 0)
+                        System.exit(0);
                 }
             }
         );

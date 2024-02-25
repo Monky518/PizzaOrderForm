@@ -14,14 +14,10 @@ public class Menu
         menuForm.append("   Medium                                   $12.00\n");
         menuForm.append("   Large                                    $16.00\n");
         menuForm.append("   Extra Large                              $20.00\n");
-        menuForm.append("--------------------------------------------------\n");
-        menuForm.append("Ingredients:\n");
-        menuForm.append("   Pepperoni                                 $1.00\n");
-        menuForm.append("   Sausage                                   $1.00\n");
-        menuForm.append("   Black Olives                              $1.00\n");
-        menuForm.append("   Banana Peppers                            $1.00\n");
-        menuForm.append("   Mushrooms                                 $1.00\n");
-        menuForm.append("   Extra Cheese                              $1.00\n");
+        menuForm.append("Ingredients $1.00 Each:\n");
+        menuForm.append("   Pepperoni                Sausage               \n");
+        menuForm.append("   Black Olives             Banana Peppers        \n");
+        menuForm.append("   Mushrooms                Extra Cheese          \n");
         menuForm.append("==================================================\n");
         return menuForm;
     }
